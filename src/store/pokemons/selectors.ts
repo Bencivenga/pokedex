@@ -42,11 +42,18 @@ export const getPokemonListPerPage = createSelector(
 	getPokemonListFiltered,
 	getOffset,
 	getLimit,
-	(pokemons, offset, limit) => {
+	getPokemonSearchValue,
+	(pokemons, offset, limit, searchValue) => {
 		const offsetValue = offset === 1 ? 0 : offset;
 
-		return pokemons.length
-			? pokemons.slice(Math.min(offsetValue * limit, pokemons.length), limit + offsetValue * limit)
-			: null;
+		if (searchValue && pokemons.length) {
+			return pokemons;
+		}
+
+		if (searchValue && !pokemons.length) {
+			return null;
+		}
+
+		return pokemons.slice(Math.min(offsetValue * limit, pokemons.length), limit + offsetValue * limit);
 	}
 );
