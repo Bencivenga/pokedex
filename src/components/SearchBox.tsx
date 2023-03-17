@@ -1,12 +1,14 @@
 import { Grid, TextField } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import debounce from 'lodash.debounce';
 import { setPokemonSearchValue } from '../store/pokemons/slice';
+import { getPokemonListFilteredByTypeStatus } from '../store/pokemons/selectors';
 
 function SearchBox() {
 	const dispatch = useAppDispatch();
+	const pokemonsListFilteredByTypeStatus = useAppSelector(getPokemonListFilteredByTypeStatus);
 	const [query, setQuery] = useState('');
 
 	const updateSearchValue = debounce((str: string) => {
@@ -37,6 +39,7 @@ function SearchBox() {
 				}}
 				value={query}
 				onChange={handleValueChange}
+				disabled={pokemonsListFilteredByTypeStatus === 'loading'}
 			/>
 			<Search sx={{ position: 'absolute', top: '29px', left: '23px', width: 30, height: 30, opacity: 0.3 }} />
 		</Grid>

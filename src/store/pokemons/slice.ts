@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { extractPokemonDataFromUrl } from '../../helpers/extractPokemonIdFromUrl';
 import { PokemonTypes, Pokemon, PokemonListItem } from '../../interfaces/pokemon.interface';
-import { fetchAllPokemonTypes, fetchPokemonData } from './async-actions';
+import { fetchAllPokemonTypes, fetchPokemonData, fetchPokemonsByType } from './async-actions';
 
 export interface PokemonsSliceState {
 	fullPokemonList: PokemonListItem[];
 	pokemonListFilteredByType: PokemonListItem[];
 	pokemonData: Record<string, Pokemon>;
-	pokemonToPokemonTypes: Record<string, Record<string, boolean>>;
 	allPokemonTypes: PokemonTypes[];
 	selectedTypes: string[];
 	pokemonSearchValue: string;
 	pokemonDataStatus: 'loading' | 'succeeded' | 'failed';
 	allPokemonTypesStatus: 'loading' | 'succeeded' | 'failed';
+	pokemonListFilteredByTypeStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	offset: number;
 	limit: number;
 }
@@ -21,12 +21,12 @@ const initialState: PokemonsSliceState = {
 	fullPokemonList: [],
 	pokemonListFilteredByType: [],
 	pokemonData: {},
-	pokemonToPokemonTypes: {},
 	selectedTypes: [],
 	allPokemonTypes: [],
 	pokemonSearchValue: '',
 	pokemonDataStatus: 'loading',
 	allPokemonTypesStatus: 'loading',
+	pokemonListFilteredByTypeStatus: 'idle',
 	offset: 1,
 	limit: 10,
 };
@@ -85,6 +85,14 @@ const pokemonsSlice = createSlice({
 
 		builder.addCase(fetchAllPokemonTypes.fulfilled, (state) => {
 			state.allPokemonTypesStatus = 'succeeded';
+		});
+
+		builder.addCase(fetchPokemonsByType.pending, (state) => {
+			state.pokemonListFilteredByTypeStatus = 'loading';
+		});
+
+		builder.addCase(fetchPokemonsByType.fulfilled, (state) => {
+			state.pokemonListFilteredByTypeStatus = 'succeeded';
 		});
 	},
 });

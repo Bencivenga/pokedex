@@ -12,7 +12,7 @@ export const getPokemonDataStatus = (state: State) => state.pokemons.pokemonData
 
 export const getAllPokemonTypesStatus = (state: State) => state.pokemons.allPokemonTypesStatus;
 
-export const getPokemonToPokemonTypes = (state: State) => state.pokemons.pokemonToPokemonTypes;
+export const getPokemonListFilteredByTypeStatus = (state: State) => state.pokemons.pokemonListFilteredByTypeStatus;
 
 export const getAllPokemonTypes = (state: State) => state.pokemons.allPokemonTypes;
 
