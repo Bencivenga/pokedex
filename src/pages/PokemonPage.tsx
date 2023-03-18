@@ -40,7 +40,7 @@ function PokemonPage() {
 				{pokemonName}
 			</Typography>
 
-			<Grid container lg={12}>
+			<Grid container>
 				<Grid item lg={8}>
 					<img
 						src={`${POKEMON_IMAGES_BASE_URL}/${pokemonName && pokemonData[pokemonName]?.id}.png`}

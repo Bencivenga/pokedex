@@ -47,7 +47,9 @@ const pokemonsSlice = createSlice({
 			const { url, data } = action.payload;
 			const name = extractPokemonDataFromUrl(url);
 
-			state.pokemonData[name] = data;
+			if (!state.pokemonData[name]) {
+				state.pokemonData[name] = data;
+			}
 		},
 
 		setAllPokemonTypes: (state, action: PayloadAction<PokemonTypes[]>) => {

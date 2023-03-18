@@ -15,7 +15,6 @@ interface PokemonCardProps {
 	pokemon: PokemonListItem;
 }
 
-
 function PokemonCard({ pokemon }: PokemonCardProps) {
 	const dispatch = useAppDispatch();
 	const pokemonData = useAppSelector(getPokemonData);
@@ -32,11 +31,13 @@ function PokemonCard({ pokemon }: PokemonCardProps) {
 		setImgLoaded(true);
 	};
 
+	const pokemonName = pokemonData[pokemon.name];
+
 	useEffect(() => {
-		if (!pokemonData[pokemon.name]) {
+		if (!pokemonName) {
 			dispatch(fetchPokemonData(`${POKEMON_BASE_URL}/${pokemon.name}`));
 		}
-	}, [pokemonData, dispatch, pokemon.name]);
+	}, [pokemonName, dispatch, pokemon.name]);
 
 	useEffect(() => {
 		setSpinner(width > 0 || height > 0 ? false : true);
