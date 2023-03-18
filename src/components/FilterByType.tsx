@@ -30,6 +30,7 @@ function FilterByType() {
 		const urls = allTypes.filter((type) => selectedTypesValue.includes(type.name)).map((item) => item.url);
 
 		dispatch(setSelectedTypes(selectedTypesValue));
+		dispatch(setOffset(1));
 		dispatch(fetchPokemonsByType(urls));
 	};
 
