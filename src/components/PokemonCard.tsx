@@ -4,7 +4,7 @@ import { Paper, Chip, Typography, Skeleton, Box } from '@mui/material';
 import { POKEMON_BASE_URL, POKEMON_IMAGES_BASE_URL, TYPES_TO_COLOR } from '../const';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getPokemonData, getPokemonDataStatus, getPokemonSearchValue } from '../store/pokemons/selectors';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { fetchPokemonData } from '../store/pokemons/async-actions';
 import { extractPokemonDataFromUrl } from '../helpers/extractPokemonIdFromUrl';
 import Highlighter from 'react-highlight-words';
@@ -23,6 +23,8 @@ function PokemonCard({ pokemon }: PokemonCardProps) {
 
 	const [imgLoaded, setImgLoaded] = useState(false);
 	const [spinner, setSpinner] = useState(true);
+	const [dataRequested, setDataRequested] = useReducer(() => true, false);
+
 	const [boxRef, { width, height }] = useElementSize<HTMLImageElement>();
 
 	const image = `${POKEMON_IMAGES_BASE_URL}/${Number(extractPokemonDataFromUrl(pokemon.url))}.png`;
@@ -34,10 +36,12 @@ function PokemonCard({ pokemon }: PokemonCardProps) {
 	const pokemonName = pokemonData[pokemon.name];
 
 	useEffect(() => {
-		if (!pokemonName) {
+
+		if (!pokemonName && !dataRequested) {
 			dispatch(fetchPokemonData(`${POKEMON_BASE_URL}/${pokemon.name}`));
+			setDataRequested();
 		}
-	}, [pokemonName, dispatch, pokemon.name]);
+	}, [pokemonName, dispatch, pokemon.name, dataRequested]);
 
 	useEffect(() => {
 		setSpinner(width > 0 || height > 0 ? false : true);
