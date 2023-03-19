@@ -1,5 +1,5 @@
 import { Box, Pagination, Select, MenuItem, InputLabel, SelectChangeEvent } from '@mui/material';
-import { ChangeEvent, useMemo } from 'react';
+import { ChangeEvent, useEffect, useMemo } from 'react';
 import { setPokemonListLength } from '../helpers/setPokemonListLength';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { getLimit, getOffset, getPokemonListFiltered } from '../store/pokemons/selectors';
@@ -12,11 +12,22 @@ function CustomPagination() {
 	const offset = useAppSelector(getOffset);
 	const fullPokemonList = useAppSelector(getPokemonListFiltered);
 
+	const scrollTop = () => {
+		window.scrollTo({
+			top: 0,
+		});
+	};
+
+	useEffect(() => {
+		scrollTop();
+	}, [limit, offset]);
+
 	const handleChangePage = (_e: ChangeEvent<unknown>, newPage: number) => {
 		dispatch(setOffset(newPage));
 	};
 
 	const handleItemsPerPage = (e: SelectChangeEvent<number>) => {
+		scrollTop();
 		const value = Number(e.target.value);
 		dispatch(setLimit(value));
 	};

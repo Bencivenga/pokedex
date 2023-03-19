@@ -6,7 +6,6 @@ import { fetchPokemonData } from '../store/pokemons/async-actions';
 import { POKEMON_BASE_URL, POKEMON_IMAGES_BASE_URL } from '../const';
 import { store } from '../store';
 import { Link, LoaderFunctionArgs } from 'react-router-dom';
-import { useEffect } from 'react';
 
 export const pokemonPageDataLoader = async ({ params }: LoaderFunctionArgs) => {
 	if (!Object.keys(store.getState().pokemons.pokemonData).length) {
@@ -16,19 +15,9 @@ export const pokemonPageDataLoader = async ({ params }: LoaderFunctionArgs) => {
 	return null;
 };
 
-const scrollTop = () => {
-	window.scrollTo({
-		top: 0,
-	});
-};
-
 function PokemonPage() {
 	const { pokemonName } = useParams();
 	const pokemonData = useAppSelector(getPokemonData);
-
-	useEffect(() => {
-		scrollTop();
-	}, []);
 
 	return (
 		<Container sx={{ pt: 3, mb: 10 }}>
